@@ -5,10 +5,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.ldgd.com.myshopingmall.home.bean.TypeListBean;
+import com.ldgd.com.myshopingmall.util.Constants;
+import com.ldgd.com.myshopingmall.util.LogUtil;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
+import com.youth.banner.loader.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import bletext.ldgd.com.myshopingmall.R;
 
 /**
  * Created by ldgd on 2017/7/31.
@@ -65,8 +78,7 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == BANNER) {
-          //  return new BannerViewHolder(mLayoutInflater.inflate(R.layout.banner_viewpager, null), mContext, resultBean);
-
+            return new BannerViewHolder(mLayoutInflater.inflate(R.layout.banner_viewpager, null), mContext, resultBean);
         }
 
 
@@ -75,6 +87,10 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (getItemViewType(position) == BANNER) {
+            BannerViewHolder bannerViewHolder = (BannerViewHolder) holder;
+            bannerViewHolder.setData(resultBean.getBanner_info());
+        }
 
     }
 
@@ -114,16 +130,64 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private class BannerViewHolder extends RecyclerView.ViewHolder {
-      //  public Banner banner;
+        public Banner banner;
         public Context mContext;
         public TypeListBean.ResultBean resultBean;
 
-        public BannerViewHolder(View inflate, Context mContext, TypeListBean.ResultBean resultBean) {
-            super(inflate);
+        public BannerViewHolder(View itemView, Context context, TypeListBean.ResultBean resultBean) {
+            super(itemView);
+
+            banner = (Banner) itemView.findViewById(R.id.banner);
+            this.mContext = context;
+            this.resultBean = resultBean;
         }
 
         public void setData(final List<TypeListBean.ResultBean.BannerInfoBean> banner_info) {
 
+            // 设置圆点指示器
+            banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+            // 动画效果
+            banner.setBannerAnimation(Transformer.Accordion);
+
+            //如果你想用自己项目的图片加载,那么----->自定义图片加载框架
+            List<String> imageUris = new ArrayList<>();
+            for (int i = 0; i < banner_info.size(); i++) {
+                imageUris.add(Constants.BASE_URl_IMAGE + banner_info.get(i).getImage());
+                LogUtil.e("                imageUris.add(banner_info.get(i).getImage());  == " + banner_info.get(i).getImage());
+            }
+
+
+            banner.setImages(imageUris)
+                    .setImageLoader(new GlideImageLoader())
+                    .setOnBannerListener(new MyOnBannerListener())
+                    .start();
+
+
+        }
+
+        private class MyOnBannerListener implements OnBannerListener {
+
+            @Override
+            public void OnBannerClick(int position) {
+
+                Toast.makeText(mContext, "你点击了：" + position, Toast.LENGTH_SHORT).show();
+            }
         }
     }
+
+    private class GlideImageLoader extends ImageLoader {
+        @Override
+        public void displayImage(Context context, Object path, ImageView imageView) {
+            //具体方法内容自己去选择，次方法是为了减少banner过多的依赖第三方包，所以将这个权限开放给使用者去选择
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            Glide.with(mContext)
+                    .load(path)
+                    .crossFade()
+                    .into(imageView);
+
+
+        }
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.ldgd.com.myshopingmall.home.fragment;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -7,6 +8,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.ldgd.com.myshopingmall.base.BaseFragment;
+import com.ldgd.com.myshopingmall.home.adapter.HomeRecycleAdapter;
 import com.ldgd.com.myshopingmall.home.bean.TypeListBean;
 import com.ldgd.com.myshopingmall.util.Constants;
 import com.ldgd.com.myshopingmall.util.LogUtil;
@@ -101,7 +103,13 @@ public class HomeFragment extends BaseFragment {
         TypeListBean typeListBean = JSON.parseObject(response, TypeListBean.class);
         TypeListBean.ResultBean resultBean = typeListBean.getResult();
 
-        LogUtil.e("resultBean = " +   resultBean.getAct_info().get(0).getIcon_url());
+
+        HomeRecycleAdapter  homeRecycleAdapter = new HomeRecycleAdapter(mContext,resultBean);
+        rvHome.setAdapter(homeRecycleAdapter);
+        //设置网格布局
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 1);
+        rvHome.setLayoutManager(manager);
+
     }
 
 

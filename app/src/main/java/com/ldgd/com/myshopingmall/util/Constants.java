@@ -13,9 +13,13 @@ public class Constants {
 
     // 请求Json数据基本URL
     public static final String BASE_URL_JSON = BASE + "/atguigu/json/";
+    // 请求图片基本URL
+    public static final String BASE_URl_IMAGE = BASE+"/atguigu/img";
 
     //主页Fragment路径   http://192.168.1.193:8080/atguigu/json/HOME_URL.json
     public static final String HOME_URL = BASE_URL_JSON + "HOME_URL.json";
+
+
 
 
 
