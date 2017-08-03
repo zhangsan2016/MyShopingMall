@@ -1,8 +1,11 @@
 package com.ldgd.com.myshopingmall.home.adapter;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +26,9 @@ import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 import com.zhy.magicviewpager.transformer.ScaleInTransformer;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import bletext.ldgd.com.myshopingmall.R;
@@ -115,7 +120,7 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -294,9 +299,33 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 0) {
+
+                dt = dt - 1000;
+                SimpleDateFormat sd = new SimpleDateFormat("HH:mm:ss");
+                tvTime.setText(sd.format(new Date(dt)));
+
+                handler.removeMessages(0);
+                handler.sendEmptyMessageDelayed(0, 1000);
+
+                if (dt == 0) {
+                    handler.removeMessages(0);
+                }
+            }
+
+
+        }
+    };
+    private long dt = 0;
+    private TextView tvTime;
+
     private class SeckillViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView tvTime;
         private final TextView tvMore;
         private final RecyclerView recyclerView;
         private final Context mContext;
@@ -310,6 +339,23 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         public void setData(TypeListBean.ResultBean.SeckillInfoBean data) {
+
+            recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+            SeckillRecyclerViewAdapter seckillRecyclerViewAdapter = new SeckillRecyclerViewAdapter(mContext, data);
+            recyclerView.setAdapter(seckillRecyclerViewAdapter);
+
+
+            //倒计时
+            dt = Integer.parseInt(data.getEnd_time()) - Integer.parseInt(data.getStart_time());
+            handler.sendEmptyMessageDelayed(0, 1000);
+
+            seckillRecyclerViewAdapter.setOnSeckillRecyclerView(new SeckillRecyclerViewAdapter.OnSeckillRecyclerView() {
+                @Override
+                public void onClick(int position) {
+
+                    Toast.makeText(mContext,"P =  " +  position,Toast.LENGTH_SHORT).show();
+                }
+            });
 
         }
     }
