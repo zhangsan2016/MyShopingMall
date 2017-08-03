@@ -1,22 +1,27 @@
 package com.ldgd.com.myshopingmall.home.adapter;
 
 import android.content.Context;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ldgd.com.myshopingmall.home.bean.TypeListBean;
 import com.ldgd.com.myshopingmall.util.Constants;
-import com.ldgd.com.myshopingmall.util.LogUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
+import com.zhy.magicviewpager.transformer.ScaleInTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,8 +84,13 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == BANNER) {
             return new BannerViewHolder(mLayoutInflater.inflate(R.layout.banner_viewpager, null), mContext, resultBean);
+        } else if (viewType == CHANNEL) {
+            return new ChannelViewHolder(mLayoutInflater.inflate(R.layout.channel_viewpager, null), mContext);
+        } else if (viewType == ACT) {
+            return new ActViewHolder(mLayoutInflater.inflate(R.layout.act_viewpager, null), mContext);
+        } else if (viewType == SECKILL) {
+            return new SeckillViewHolder(mLayoutInflater.inflate(R.layout.seckill_viewpager, null), mContext);
         }
-
 
         return null;
     }
@@ -90,13 +100,22 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (getItemViewType(position) == BANNER) {
             BannerViewHolder bannerViewHolder = (BannerViewHolder) holder;
             bannerViewHolder.setData(resultBean.getBanner_info());
+        } else if (getItemViewType(position) == CHANNEL) {
+            ChannelViewHolder channelViewHolder = (ChannelViewHolder) holder;
+            channelViewHolder.setData(resultBean.getChannel_info());
+        } else if (getItemViewType(position) == ACT) {
+            ActViewHolder actViewHolder = (ActViewHolder) holder;
+            actViewHolder.setData(resultBean.getAct_info());
+        } else if (getItemViewType(position) == SECKILL) {
+            SeckillViewHolder seckillViewHolder = (SeckillViewHolder) holder;
+            seckillViewHolder.setData(resultBean.getSeckill_info());
         }
-
     }
+
 
     @Override
     public int getItemCount() {
-        return 1;
+        return 3;
     }
 
     @Override
@@ -129,6 +148,9 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return currentType;
     }
 
+    /**
+     * 横幅广告 ViewHolder
+     */
     private class BannerViewHolder extends RecyclerView.ViewHolder {
         public Banner banner;
         public Context mContext;
@@ -153,7 +175,6 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             List<String> imageUris = new ArrayList<>();
             for (int i = 0; i < banner_info.size(); i++) {
                 imageUris.add(Constants.BASE_URl_IMAGE + banner_info.get(i).getImage());
-                LogUtil.e("                imageUris.add(banner_info.get(i).getImage());  == " + banner_info.get(i).getImage());
             }
 
 
@@ -175,9 +196,128 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
+    /**
+     * 引导 ViewHolder
+     */
+    private class ChannelViewHolder extends RecyclerView.ViewHolder {
+        public GridView gridView;
+        public Context mContext;
+
+
+        public ChannelViewHolder(View itemView, Context context) {
+            super(itemView);
+            this.gridView = (GridView) itemView.findViewById(R.id.gv_channel);
+            this.mContext = context;
+        }
+
+
+        public void setData(List<TypeListBean.ResultBean.ChannelInfoBean> channel_info) {
+
+            gridView.setAdapter(new ChannelAdapter(mContext, channel_info));
+
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Toast.makeText(mContext, "当前位置 = " + position, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+    }
+
+    private class ActViewHolder extends RecyclerView.ViewHolder {
+        private ViewPager viewPager;
+        private Context mContext;
+
+        public ActViewHolder(View inflate, Context mContext) {
+            super(inflate);
+            viewPager = (ViewPager) inflate.findViewById(R.id.id_viewpager);
+            this.mContext = mContext;
+
+        }
+
+        public void setData(final List<TypeListBean.ResultBean.ActInfoBean> act_info) {
+
+            viewPager.setPageMargin(20);//设置page间间距，自行根据需求设置
+            viewPager.setOffscreenPageLimit(3);//>=3
+            //setPageTransformer 决定动画效果
+            //viewPager.setPageTransformer(true, new RotateDownPageTransformer());
+            viewPager.setPageTransformer(true, new ScaleInTransformer());
+
+
+            viewPager.setAdapter(new PagerAdapter() {
+                @Override
+                public Object instantiateItem(ViewGroup container, int position) {
+                    ImageView imageView = new ImageView(mContext);
+                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                    //绑定数据
+                    Glide.with(mContext).load(Constants.BASE_URl_IMAGE + act_info.get(position).getIcon_url()).into(imageView);
+                    container.addView(imageView);
+                    return imageView;
+                }
+
+                @Override
+                public void destroyItem(ViewGroup container, int position, Object object) {
+                    super.destroyItem(container, position, object);
+                    container.removeView((View) object);
+                }
+
+
+                @Override
+                public int getCount() {
+                    return act_info.size();
+                }
+
+                @Override
+                public boolean isViewFromObject(View view, Object object) {
+                    return view == object;
+                }
+            });
+
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+        }
+    }
+
+    private class SeckillViewHolder extends RecyclerView.ViewHolder {
+
+        private final TextView tvTime;
+        private final TextView tvMore;
+        private final RecyclerView recyclerView;
+        private final Context mContext;
+
+        public SeckillViewHolder(View itemView, Context mContext) {
+            super(itemView);
+            this.mContext = mContext;
+            tvTime = (TextView) itemView.findViewById(R.id.tv_time_seckill);
+            tvMore = (TextView) itemView.findViewById(R.id.tv_more_seckill);
+            recyclerView = (RecyclerView) itemView.findViewById(R.id.rv_seckill);
+        }
+
+        public void setData(TypeListBean.ResultBean.SeckillInfoBean data) {
+
+        }
+    }
+
     private class GlideImageLoader extends ImageLoader {
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
+
             //具体方法内容自己去选择，次方法是为了减少banner过多的依赖第三方包，所以将这个权限开放给使用者去选择
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             Glide.with(mContext)

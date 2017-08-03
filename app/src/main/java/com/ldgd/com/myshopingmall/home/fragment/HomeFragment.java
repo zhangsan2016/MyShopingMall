@@ -94,7 +94,6 @@ public class HomeFragment extends BaseFragment {
                     break;
             }
 
-
         }
     }
 
@@ -104,7 +103,7 @@ public class HomeFragment extends BaseFragment {
         TypeListBean.ResultBean resultBean = typeListBean.getResult();
 
 
-        HomeRecycleAdapter  homeRecycleAdapter = new HomeRecycleAdapter(mContext,resultBean);
+        HomeRecycleAdapter homeRecycleAdapter = new HomeRecycleAdapter(mContext, resultBean);
         rvHome.setAdapter(homeRecycleAdapter);
         //设置网格布局
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 1);
