@@ -392,14 +392,21 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private class HotViewHolder extends RecyclerView.ViewHolder {
         private Context mContext;
+        private GridView gv_hot;
+        private TextView tv_more_recommend;
 
         public HotViewHolder(View inflate, Context mContext) {
             super(inflate);
             this.mContext = mContext;
+            gv_hot = (GridView) inflate.findViewById(R.id.gv_hot);
+            tv_more_recommend = (TextView) inflate.findViewById(R.id.tv_more_recommend);
+
         }
 
 
         public void setData(List<TypeListBean.ResultBean.HotInfoBean> data) {
+            HotGridViewAdapter hotGridViewAdapter = new HotGridViewAdapter(mContext, data);
+            gv_hot.setAdapter(hotGridViewAdapter);
 
         }
     }
