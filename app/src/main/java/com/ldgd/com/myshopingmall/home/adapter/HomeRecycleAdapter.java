@@ -96,7 +96,7 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (viewType == SECKILL) {
             return new SeckillViewHolder(mLayoutInflater.inflate(R.layout.seckill_viewpager, null), mContext);
         } else if (viewType == RECOMMEND) {
-            return new RecommendViewHolder(mLayoutInflater.inflate(R.layout.recommend_item, null), mContext);
+            return new RecommendViewHolder(mLayoutInflater.inflate(R.layout.recommend_item2, null), mContext);
         }
 
         return null;
@@ -113,7 +113,10 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (getItemViewType(position) == ACT) {
             ActViewHolder actViewHolder = (ActViewHolder) holder;
             actViewHolder.setData(resultBean.getAct_info());
-        } else if (getItemViewType(position) == RECOMMEND) {
+        }  else if (getItemViewType(position) == SECKILL) {
+            SeckillViewHolder seckillViewHolder = (SeckillViewHolder) holder;
+            seckillViewHolder.setData(resultBean.getSeckill_info());
+        }else if (getItemViewType(position) == RECOMMEND) {
             RecommendViewHolder recommendViewHolder = (HomeRecycleAdapter.RecommendViewHolder) holder;
             recommendViewHolder.setData(resultBean.getRecommend_info());
         }
@@ -122,7 +125,7 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 5;
     }
 
     @Override
@@ -378,7 +381,6 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public void setData(List<TypeListBean.ResultBean.RecommendInfoBean> data) {
             RecommendGridViewAdapter recommendGridViewAdapter = new RecommendGridViewAdapter(mContext,data);
             gvhot.setAdapter(recommendGridViewAdapter);
-
 
         }
     }

@@ -7,7 +7,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ldgd.com.myshopingmall.home.bean.TypeListBean;
+import com.ldgd.com.myshopingmall.util.Constants;
 
 import java.util.List;
 
@@ -49,6 +51,9 @@ public class RecommendGridViewAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = View.inflate(mContext, R.layout.item_recommend_grid_view, null);
+            holder.tv_price = (TextView) convertView.findViewById(R.id.tv_price);
+            holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
+            holder.iv_recommend = (ImageView) convertView.findViewById(R.id.iv_recommend);
             convertView.setTag(holder);
 
         } else {
@@ -58,11 +63,12 @@ public class RecommendGridViewAdapter extends BaseAdapter {
         TypeListBean.ResultBean.RecommendInfoBean bean = recommendData.get(position);
         holder.tv_name.setText(bean.getName());
         holder.tv_price.setText(bean.getCover_price());
+        Glide.with(mContext).load(Constants.BASE_URl_IMAGE + bean.getFigure()).into(holder.iv_recommend);
 
         return convertView;
     }
 
-    private  class ViewHolder {
+    private static class ViewHolder {
         private ImageView iv_recommend;
         private TextView tv_name;
         private TextView tv_price;
