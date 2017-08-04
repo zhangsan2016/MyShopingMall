@@ -114,7 +114,8 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ActViewHolder actViewHolder = (ActViewHolder) holder;
             actViewHolder.setData(resultBean.getAct_info());
         } else if (getItemViewType(position) == RECOMMEND) {
-
+            RecommendViewHolder recommendViewHolder = (HomeRecycleAdapter.RecommendViewHolder) holder;
+            recommendViewHolder.setData(resultBean.getRecommend_info());
         }
     }
 
@@ -354,9 +355,30 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(int position) {
 
-                    Toast.makeText(mContext,"P =  " +  position,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "P =  " + position, Toast.LENGTH_SHORT).show();
                 }
             });
+
+        }
+    }
+
+    private class RecommendViewHolder extends RecyclerView.ViewHolder {
+        private TextView tv_more_recommend;
+        private Context mContext;
+        private GridView gvhot;
+
+        public RecommendViewHolder(View inflate, Context mContext) {
+            super(inflate);
+            this.mContext = mContext;
+            this.gvhot = (GridView) inflate.findViewById(R.id.gv_hot);
+            this.tv_more_recommend = (TextView) inflate.findViewById(R.id.tv_more_recommend);
+
+        }
+
+        public void setData(List<TypeListBean.ResultBean.RecommendInfoBean> data) {
+            RecommendGridViewAdapter recommendGridViewAdapter = new RecommendGridViewAdapter(mContext,data);
+            gvhot.setAdapter(recommendGridViewAdapter);
+
 
         }
     }
