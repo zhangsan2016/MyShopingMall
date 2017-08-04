@@ -95,6 +95,8 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return new ActViewHolder(mLayoutInflater.inflate(R.layout.act_viewpager, null), mContext);
         } else if (viewType == SECKILL) {
             return new SeckillViewHolder(mLayoutInflater.inflate(R.layout.seckill_viewpager, null), mContext);
+        } else if (viewType == RECOMMEND) {
+            return new RecommendViewHolder(mLayoutInflater.inflate(R.layout.recommend_item, null), mContext);
         }
 
         return null;
@@ -111,9 +113,8 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (getItemViewType(position) == ACT) {
             ActViewHolder actViewHolder = (ActViewHolder) holder;
             actViewHolder.setData(resultBean.getAct_info());
-        } else if (getItemViewType(position) == SECKILL) {
-            SeckillViewHolder seckillViewHolder = (SeckillViewHolder) holder;
-            seckillViewHolder.setData(resultBean.getSeckill_info());
+        } else if (getItemViewType(position) == RECOMMEND) {
+
         }
     }
 
