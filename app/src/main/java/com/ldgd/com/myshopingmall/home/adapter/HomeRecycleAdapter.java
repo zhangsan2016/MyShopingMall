@@ -96,7 +96,9 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (viewType == SECKILL) {
             return new SeckillViewHolder(mLayoutInflater.inflate(R.layout.seckill_viewpager, null), mContext);
         } else if (viewType == RECOMMEND) {
-            return new RecommendViewHolder(mLayoutInflater.inflate(R.layout.recommend_item2, null), mContext);
+            return new RecommendViewHolder(mLayoutInflater.inflate(R.layout.recommend_item, null), mContext);
+        } else if (viewType == HOT) {
+            return new HotViewHolder(mLayoutInflater.inflate(R.layout.hot_item, null), mContext);
         }
 
         return null;
@@ -113,19 +115,22 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         } else if (getItemViewType(position) == ACT) {
             ActViewHolder actViewHolder = (ActViewHolder) holder;
             actViewHolder.setData(resultBean.getAct_info());
-        }  else if (getItemViewType(position) == SECKILL) {
+        } else if (getItemViewType(position) == SECKILL) {
             SeckillViewHolder seckillViewHolder = (SeckillViewHolder) holder;
             seckillViewHolder.setData(resultBean.getSeckill_info());
-        }else if (getItemViewType(position) == RECOMMEND) {
+        } else if (getItemViewType(position) == RECOMMEND) {
             RecommendViewHolder recommendViewHolder = (HomeRecycleAdapter.RecommendViewHolder) holder;
             recommendViewHolder.setData(resultBean.getRecommend_info());
+        } else if (getItemViewType(position) == HOT) {
+            HotViewHolder hotViewHolder = (HotViewHolder) holder;
+            hotViewHolder.setData(resultBean.getHot_info());
         }
     }
 
 
     @Override
     public int getItemCount() {
-        return 5;
+        return 6;
     }
 
     @Override
@@ -379,8 +384,22 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         public void setData(List<TypeListBean.ResultBean.RecommendInfoBean> data) {
-            RecommendGridViewAdapter recommendGridViewAdapter = new RecommendGridViewAdapter(mContext,data);
+            RecommendGridViewAdapter recommendGridViewAdapter = new RecommendGridViewAdapter(mContext, data);
             gvhot.setAdapter(recommendGridViewAdapter);
+
+        }
+    }
+
+    private class HotViewHolder extends RecyclerView.ViewHolder {
+        private Context mContext;
+
+        public HotViewHolder(View inflate, Context mContext) {
+            super(inflate);
+            this.mContext = mContext;
+        }
+
+
+        public void setData(List<TypeListBean.ResultBean.HotInfoBean> data) {
 
         }
     }
