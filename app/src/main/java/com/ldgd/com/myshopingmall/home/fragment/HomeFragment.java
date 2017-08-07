@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.ldgd.com.myshopingmall.base.BaseFragment;
@@ -102,12 +103,57 @@ public class HomeFragment extends BaseFragment {
         TypeListBean typeListBean = JSON.parseObject(response, TypeListBean.class);
         TypeListBean.ResultBean resultBean = typeListBean.getResult();
 
-
         HomeRecycleAdapter homeRecycleAdapter = new HomeRecycleAdapter(mContext, resultBean);
         rvHome.setAdapter(homeRecycleAdapter);
+
         //设置网格布局
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 1);
         rvHome.setLayoutManager(manager);
+
+        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (position > 3) {
+                    ib_top.setVisibility(View.VISIBLE);
+                } else {
+                    ib_top.setVisibility(View.GONE);
+                }
+
+
+                return 1;
+            }
+        });
+
+        initListener();
+
+    }
+
+    private void initListener() {
+        // 置顶的监听
+        ib_top.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "置顶", Toast.LENGTH_SHORT).show();
+                rvHome.scrollToPosition(0);
+            }
+        });
+
+        // 搜索监听
+        tv_search_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "搜索", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // 消息监听
+        tv_message_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "消息", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 

@@ -387,6 +387,16 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             RecommendGridViewAdapter recommendGridViewAdapter = new RecommendGridViewAdapter(mContext, data);
             gvhot.setAdapter(recommendGridViewAdapter);
 
+            // 点击事件
+            gvhot.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Toast.makeText(mContext, "P =  " + position, Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+
         }
     }
 
@@ -407,6 +417,15 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public void setData(List<TypeListBean.ResultBean.HotInfoBean> data) {
             HotGridViewAdapter hotGridViewAdapter = new HotGridViewAdapter(mContext, data);
             gv_hot.setAdapter(hotGridViewAdapter);
+
+            //点击事件
+            gv_hot.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Toast.makeText(mContext, "position:" + position, Toast.LENGTH_SHORT).show();
+
+                }
+            });
 
         }
     }
