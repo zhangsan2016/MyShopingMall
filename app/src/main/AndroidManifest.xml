@@ -24,7 +24,7 @@
 
         <activity android:name="com.ldgd.com.myshopingmall.app.MainActivity"></activity>
 
-        <activity android:name="com.ldgd.com.myshopingmall.app.GoodsInfoActivity"></activity>
+        <activity android:name="com.ldgd.com.myshopingmall.app.GoodsInfoActivity" android:launchMode="singleInstance"></activity>
     </application>
 
 </manifest>
