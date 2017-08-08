@@ -23,6 +23,8 @@
         </activity>
 
         <activity android:name="com.ldgd.com.myshopingmall.app.MainActivity"></activity>
+
+        <activity android:name="com.ldgd.com.myshopingmall.app.GoodsInfoActivity"></activity>
     </application>
 
 </manifest>

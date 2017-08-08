@@ -1,6 +1,7 @@
 package com.ldgd.com.myshopingmall.home.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.ldgd.com.myshopingmall.app.GoodsInfoActivity;
 import com.ldgd.com.myshopingmall.home.bean.TypeListBean;
 import com.ldgd.com.myshopingmall.util.Constants;
 import com.youth.banner.Banner;
@@ -392,6 +394,9 @@ public class HomeRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Toast.makeText(mContext, "P =  " + position, Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(mContext, GoodsInfoActivity.class);
+                    mContext.startActivity(intent);
 
                 }
             });
