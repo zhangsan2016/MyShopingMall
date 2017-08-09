@@ -1,4 +1,4 @@
-package com.ldgd.com.myshopingmall.shoppingcart.fragment;
+package com.ldgd.com.myshopingmall.shoppingcart.fragment.fragment;
 
 import android.graphics.Color;
 import android.view.Gravity;
