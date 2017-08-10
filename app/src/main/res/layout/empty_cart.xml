@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:visibility="gone">
 
 
     <RelativeLayout
@@ -18,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/empty_cart" />
+            android:background="@drawable/empty_cart" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,6 +34,6 @@
             android:paddingTop="5dp"
             android:text="去逛逛"
             android:textColor="#ed3f3f"
-            android:textSize="20sp" />
+            android:textSize="15sp" />
     </RelativeLayout>
 </LinearLayout>
