@@ -109,7 +109,8 @@
                 android:layout_height="wrap_content"
                 android:background="#fff"
                 android:orientation="horizontal"
-                android:padding="5dp">
+                android:padding="5dp"
+                android:visibility="gone">
 
                 <CheckBox
                     android:layout_width="0dp"
@@ -146,9 +147,9 @@
 
 
             </LinearLayout>
-
-
         </LinearLayout>
+
+        <include layout="@layout/empty_cart" />
 
     </FrameLayout>
 
