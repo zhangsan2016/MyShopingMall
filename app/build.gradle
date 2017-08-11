@@ -39,4 +39,8 @@ dependencies {
 
      /*  hongyangAndroid/MagicViewPager 库，单页显示3个Item的ViewPager炫酷切换效果， 适用于Banner等*/
     compile "com.zhy:magic-viewpager:1.0.1"
+
+    compile 'com.google.code.gson:gson:2.2.4'
+
+
 }

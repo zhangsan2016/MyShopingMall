@@ -14,7 +14,7 @@ import okhttp3.OkHttpClient;
  */
 
 public class MyAppliction extends Application {
-    private Context mContext;
+    private static Context  mContext;
 
 
 
@@ -41,7 +41,7 @@ public class MyAppliction extends Application {
         OkHttpUtils.initClient(okHttpClient);
     }
 
-    public Context getmContext() {
+    public static Context getmContext() {
         return mContext;
     }
 }
