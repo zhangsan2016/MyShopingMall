@@ -34,13 +34,15 @@ public class AddSubview extends LinearLayout implements View.OnClickListener {
     }
 
     public AddSubview(Context context, @Nullable AttributeSet attrs) {
-        this(context, null, 0);
+        this(context, attrs, 0);
     }
 
     public AddSubview(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         this.mContext = context;
+
+        value = getValue();
 
         //把布局和当前类形成整体
         View.inflate(context, R.layout.number_add_sub_layout, this);
@@ -62,6 +64,7 @@ public class AddSubview extends LinearLayout implements View.OnClickListener {
 
     public void setValue(int value) {
         this.value = value;
+        count.setText(value + "");
     }
 
     public int getMinValue() {
@@ -81,40 +84,49 @@ public class AddSubview extends LinearLayout implements View.OnClickListener {
     }
 
 
-    public void setOnNumberChangeListener(OnNumberChangeListener onNumberChangeListener) {
-        this.onNumberChangeListener = onNumberChangeListener;
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_sub:
                 LogUtil.e("iv_sub");
-
-                if(onNumberChangeListener != null){
-                    onNumberChangeListener.subNumber();
+                value--;
+                setValue(value);
+                if (onNumberChangeListener != null) {
+                    onNumberChangeListener.onNumberChange(value);
                 }
 
                 break;
             case R.id.iv_add:
                 LogUtil.e("iv_add");
-
-                if(onNumberChangeListener != null){
-                    onNumberChangeListener.addNumber();
+                value++;
+                setValue(value);
+                if (onNumberChangeListener != null) {
+                    onNumberChangeListener.onNumberChange(value);
                 }
+
                 break;
 
         }
+
     }
 
+
+    /**
+     * 当数量发生变化的时候回调
+     */
+    public interface OnNumberChangeListener {
+        /**
+         * 当数据发生变化的时候回调
+         *
+         * @param value
+         */
+        public void onNumberChange(int value);
+    }
 
     private OnNumberChangeListener onNumberChangeListener;
 
-    public interface OnNumberChangeListener {
-        public void addNumber();
-
-        public void subNumber();
+    public void setOnNumberChangeListener(OnNumberChangeListener onNumberChangeListener) {
+        this.onNumberChangeListener = onNumberChangeListener;
     }
-
 
 }

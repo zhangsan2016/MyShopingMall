@@ -13,20 +13,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AddSubview addsubview = (AddSubview) this.findViewById(R.id.addsubview);
+        AddSubview addsubview = (AddSubview) findViewById(R.id.addsubview);
 
         addsubview.setOnNumberChangeListener(new AddSubview.OnNumberChangeListener() {
             @Override
-            public void addNumber() {
-                Toast.makeText(MainActivity.this, "iv_sub", Toast.LENGTH_SHORT).show();
-            }
+            public void onNumberChange(int value) {
+                Toast.makeText(MainActivity.this,"当前value = "  + value,Toast.LENGTH_SHORT).show();
 
-            @Override
-            public void subNumber() {
-                Toast.makeText(MainActivity.this, "iv_add", Toast.LENGTH_SHORT).show();
             }
         });
-
 
     }
 }

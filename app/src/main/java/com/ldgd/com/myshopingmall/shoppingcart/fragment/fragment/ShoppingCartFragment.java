@@ -11,7 +11,7 @@ import bletext.ldgd.com.myshopingmall.R;
  * 购物车
  */
 
-public class ShoppingcartFragment extends BaseFragment {
+public class ShoppingCartFragment extends BaseFragment {
 
     @Override
     public View initView() {

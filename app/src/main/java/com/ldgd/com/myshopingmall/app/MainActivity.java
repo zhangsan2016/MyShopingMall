@@ -13,7 +13,7 @@ import android.widget.RadioGroup;
 import com.ldgd.com.myshopingmall.base.BaseFragment;
 import com.ldgd.com.myshopingmall.community.fragment.CommunityFragment;
 import com.ldgd.com.myshopingmall.home.fragment.HomeFragment;
-import com.ldgd.com.myshopingmall.shoppingcart.fragment.fragment.ShoppingcartFragment;
+import com.ldgd.com.myshopingmall.shoppingcart.fragment.fragment.ShoppingCartFragment;
 import com.ldgd.com.myshopingmall.type.fragment.TypeFragment;
 import com.ldgd.com.myshopingmall.user.fragment.UserFragment;
 
@@ -66,7 +66,7 @@ public class MainActivity extends FragmentActivity {
         fragments.add(new HomeFragment());
         fragments.add(new TypeFragment());
         fragments.add(new CommunityFragment());
-        fragments.add(new ShoppingcartFragment());
+        fragments.add(new ShoppingCartFragment());
         fragments.add(new UserFragment());
 
     }
