@@ -1,4 +1,4 @@
-package com.ldgd.com.myshopingmall.shoppingcart.fragment.view;
+package bletext.ldgd.com.addsubview.view;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -8,9 +8,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ldgd.com.myshopingmall.util.LogUtil;
+import bletext.ldgd.com.addsubview.LogUtil;
+import bletext.ldgd.com.addsubview.R;
 
-import bletext.ldgd.com.myshopingmall.R;
 
 /**
  * Created by ldgd on 2017/8/9.
@@ -25,9 +25,12 @@ public class AddSubview extends LinearLayout implements View.OnClickListener {
     private int minValue = 1;
     private int maxValue = 10;
 
+    private Context mContext;
+
 
     public AddSubview(Context context) {
         this(context, null);
+
     }
 
     public AddSubview(Context context, @Nullable AttributeSet attrs) {
@@ -36,6 +39,8 @@ public class AddSubview extends LinearLayout implements View.OnClickListener {
 
     public AddSubview(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        this.mContext = context;
 
         //把布局和当前类形成整体
         View.inflate(context, R.layout.number_add_sub_layout, this);
@@ -76,15 +81,40 @@ public class AddSubview extends LinearLayout implements View.OnClickListener {
     }
 
 
+    public void setOnNumberChangeListener(OnNumberChangeListener onNumberChangeListener) {
+        this.onNumberChangeListener = onNumberChangeListener;
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_sub:
                 LogUtil.e("iv_sub");
+
+                if(onNumberChangeListener != null){
+                    onNumberChangeListener.subNumber();
+                }
+
                 break;
             case R.id.iv_add:
                 LogUtil.e("iv_add");
+
+                if(onNumberChangeListener != null){
+                    onNumberChangeListener.addNumber();
+                }
                 break;
+
         }
     }
+
+
+    private OnNumberChangeListener onNumberChangeListener;
+
+    public interface OnNumberChangeListener {
+        public void addNumber();
+
+        public void subNumber();
+    }
+
+
 }

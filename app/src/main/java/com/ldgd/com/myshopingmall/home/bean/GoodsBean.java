@@ -13,6 +13,11 @@ public class GoodsBean implements Serializable {
     private String name;
     private String product_id;
 
+    /**
+     * 商品的个数
+     */
+    private int count;
+
 
     public GoodsBean(String cover_price, String figure, String name, String product_id) {
         this.cover_price = cover_price;
@@ -53,6 +58,13 @@ public class GoodsBean implements Serializable {
         this.product_id = product_id;
     }
 
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     @Override
     public String toString() {
@@ -61,6 +73,7 @@ public class GoodsBean implements Serializable {
                 ", figure='" + figure + '\'' +
                 ", name='" + name + '\'' +
                 ", product_id='" + product_id + '\'' +
+                ", count=" + count +
                 '}';
     }
 }

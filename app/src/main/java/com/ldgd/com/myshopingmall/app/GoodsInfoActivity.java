@@ -11,15 +11,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ldgd.com.myshopingmall.home.adapter.HomeRecycleAdapter;
 import com.ldgd.com.myshopingmall.home.bean.GoodsBean;
+import com.ldgd.com.myshopingmall.shoppingcart.fragment.util.CartStorage;
 import com.ldgd.com.myshopingmall.util.Constants;
 import com.ldgd.com.myshopingmall.util.LogUtil;
 
+import java.util.List;
+
 import bletext.ldgd.com.myshopingmall.R;
 
+import static bletext.ldgd.com.myshopingmall.R.id.tv_good_info_collection;
 import static bletext.ldgd.com.myshopingmall.R.id.tv_good_info_name;
 
 /**
@@ -48,6 +53,10 @@ public class GoodsInfoActivity extends Activity implements View.OnClickListener 
     private TextView tvMoreHome;
     private Button btnMore;
 
+    private ImageView iGgoodInfoBack, ibGoodInfoMore;
+
+    private GoodsBean goodsBean;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +65,7 @@ public class GoodsInfoActivity extends Activity implements View.OnClickListener 
 
         findViews();
 
-        GoodsBean goodsBean = (GoodsBean) getIntent().getSerializableExtra(HomeRecycleAdapter.GOODS_BEAN);
+         goodsBean = (GoodsBean) getIntent().getSerializableExtra(HomeRecycleAdapter.GOODS_BEAN);
 
         if (goodsBean != null) {
             LogUtil.e("goodsBean = " + goodsBean.toString());
@@ -99,7 +108,7 @@ public class GoodsInfoActivity extends Activity implements View.OnClickListener 
         wbGoodInfoMore = (WebView) findViewById(R.id.wb_good_info_more);
         llGoodsRoot = (LinearLayout) findViewById(R.id.ll_goods_root);
         tvGoodInfoCallcenter = (TextView) findViewById(R.id.tv_good_info_callcenter);
-        tvGoodInfoCollection = (TextView) findViewById(R.id.tv_good_info_collection);
+        tvGoodInfoCollection = (TextView) findViewById(tv_good_info_collection);
         tvGoodInfoCart = (TextView) findViewById(R.id.tv_good_info_cart);
         btnGoodInfoAddcart = (Button) findViewById(R.id.btn_good_info_addcart);
 
@@ -107,9 +116,17 @@ public class GoodsInfoActivity extends Activity implements View.OnClickListener 
         tvMoreSearch = (TextView) findViewById(R.id.tv_more_search);
         tvMoreHome = (TextView) findViewById(R.id.tv_more_home);
         btnMore = (Button) findViewById(R.id.btn_more);
+        iGgoodInfoBack = (ImageView) findViewById(R.id.ib_good_info_back);
+        ibGoodInfoMore = (ImageView) findViewById(R.id.ib_good_info_more);
+
 
         btnMore.setOnClickListener(this);
         btnGoodInfoAddcart.setOnClickListener(this);
+        tvGoodInfoCart.setOnClickListener(this);
+        tvGoodInfoCollection.setOnClickListener(this);
+        tvGoodInfoCallcenter.setOnClickListener(this);
+        iGgoodInfoBack.setOnClickListener(this);
+        ibGoodInfoMore.setOnClickListener(this);
     }
 
     /**
@@ -120,8 +137,25 @@ public class GoodsInfoActivity extends Activity implements View.OnClickListener 
      */
     @Override
     public void onClick(View v) {
-        if (v == btnGoodInfoAddcart) {
-        } else if (v == btnMore) {
+        if (v == btnMore) {
+        } else if (v == btnGoodInfoAddcart) {
+            Toast.makeText(GoodsInfoActivity.this, "加入购物车", Toast.LENGTH_SHORT).show();
+            CartStorage cartStorage = CartStorage.getInstance();
+            cartStorage.addData(goodsBean);
+        } else if (v == tvGoodInfoCart) {
+            Toast.makeText(GoodsInfoActivity.this, "购物车", Toast.LENGTH_SHORT).show();
+            CartStorage cartStorage = CartStorage.getInstance();
+            List<GoodsBean> goodsBeens = cartStorage.getAllData();
+            LogUtil.e("goodsBeens = " + goodsBeens.toString());
+
+        } else if (v == tvGoodInfoCollection) {
+            Toast.makeText(GoodsInfoActivity.this, "收藏", Toast.LENGTH_SHORT).show();
+        } else if (v == tvGoodInfoCallcenter) {
+            Toast.makeText(GoodsInfoActivity.this, "客服", Toast.LENGTH_SHORT).show();
+        } else if (v == iGgoodInfoBack) {
+            Toast.makeText(GoodsInfoActivity.this, "返回", Toast.LENGTH_SHORT).show();
+        } else if (v == ibGoodInfoMore) {
+            Toast.makeText(GoodsInfoActivity.this, "更多", Toast.LENGTH_SHORT).show();
         }
     }
 
