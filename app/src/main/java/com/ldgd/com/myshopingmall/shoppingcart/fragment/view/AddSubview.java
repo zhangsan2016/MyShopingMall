@@ -12,6 +12,7 @@ import com.ldgd.com.myshopingmall.util.LogUtil;
 
 import bletext.ldgd.com.myshopingmall.R;
 
+
 /**
  * Created by ldgd on 2017/8/9.
  */
@@ -25,17 +26,24 @@ public class AddSubview extends LinearLayout implements View.OnClickListener {
     private int minValue = 1;
     private int maxValue = 10;
 
+    private Context mContext;
+
 
     public AddSubview(Context context) {
         this(context, null);
+
     }
 
     public AddSubview(Context context, @Nullable AttributeSet attrs) {
-        this(context, null, 0);
+        this(context, attrs, 0);
     }
 
     public AddSubview(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        this.mContext = context;
+
+        value = getValue();
 
         //把布局和当前类形成整体
         View.inflate(context, R.layout.number_add_sub_layout, this);
@@ -57,6 +65,7 @@ public class AddSubview extends LinearLayout implements View.OnClickListener {
 
     public void setValue(int value) {
         this.value = value;
+        count.setText(value + "");
     }
 
     public int getMinValue() {
@@ -81,10 +90,45 @@ public class AddSubview extends LinearLayout implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.iv_sub:
                 LogUtil.e("iv_sub");
+                value--;
+                setValue(value);
+                if (onNumberChangeListener != null) {
+                    onNumberChangeListener.onNumberChange(value);
+                }
+
                 break;
             case R.id.iv_add:
                 LogUtil.e("iv_add");
+                value++;
+                setValue(value);
+                if (onNumberChangeListener != null) {
+                    onNumberChangeListener.onNumberChange(value);
+                }
+
                 break;
+
         }
+
     }
+
+
+    /**
+     * 当数量发生变化的时候回调
+     */
+    public interface OnNumberChangeListener {
+        /**
+         * 当数据发生变化的时候回调
+         *
+         * @param value
+         */
+        public void onNumberChange(int value);
+    }
+
+    private OnNumberChangeListener onNumberChangeListener;
+
+    public void setOnNumberChangeListener(OnNumberChangeListener onNumberChangeListener) {
+        this.onNumberChangeListener = onNumberChangeListener;
+    }
+
 }
+
