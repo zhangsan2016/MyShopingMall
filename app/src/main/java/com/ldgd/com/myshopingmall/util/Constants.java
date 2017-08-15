@@ -8,7 +8,7 @@ public class Constants {
 
     //系统默认的模拟器就用这个ip
     //  public static final String BASE = "http://10.0.2.2:8080";
-    public static final String BASE = "http://192.168.1.196:8080";
+    public static final String BASE = "http://192.168.1.197:8080";
 
 
     // 请求Json数据基本URL

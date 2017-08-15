@@ -90,19 +90,23 @@ public class AddSubview extends LinearLayout implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.iv_sub:
                 LogUtil.e("iv_sub");
-                value--;
-                setValue(value);
-                if (onNumberChangeListener != null) {
-                    onNumberChangeListener.onNumberChange(value);
+                if (value > minValue) {
+                    value--;
+                    setValue(value);
+                    if (onNumberChangeListener != null) {
+                        onNumberChangeListener.onNumberChange(value);
+                    }
                 }
 
                 break;
             case R.id.iv_add:
                 LogUtil.e("iv_add");
-                value++;
-                setValue(value);
-                if (onNumberChangeListener != null) {
-                    onNumberChangeListener.onNumberChange(value);
+                if (value < maxValue) {
+                    value++;
+                    setValue(value);
+                    if (onNumberChangeListener != null) {
+                        onNumberChangeListener.onNumberChange(value);
+                    }
                 }
 
                 break;

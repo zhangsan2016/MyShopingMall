@@ -17,7 +17,10 @@ public class GoodsBean implements Serializable {
      * 商品的个数
      */
     private int count;
-
+    /**
+     * 是否被选中
+     */
+    private boolean isChildSelected;
 
     public GoodsBean(String cover_price, String figure, String name, String product_id) {
         this.cover_price = cover_price;
@@ -66,6 +69,14 @@ public class GoodsBean implements Serializable {
         this.count = count;
     }
 
+    public boolean isChildSelected() {
+        return isChildSelected;
+    }
+
+    public void setChildSelected(boolean childSelected) {
+        isChildSelected = childSelected;
+    }
+
     @Override
     public String toString() {
         return "GoodsBean{" +
@@ -74,6 +85,7 @@ public class GoodsBean implements Serializable {
                 ", name='" + name + '\'' +
                 ", product_id='" + product_id + '\'' +
                 ", count=" + count +
+                ", isChildSelected=" + isChildSelected +
                 '}';
     }
 }

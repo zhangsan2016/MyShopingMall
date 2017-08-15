@@ -21,6 +21,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/tv_shopcart_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -97,6 +98,7 @@
                     android:id="@+id/btn_check_out"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:background="#ed3f3f"
                     android:text="去结算"
                     android:textColor="#fff" />

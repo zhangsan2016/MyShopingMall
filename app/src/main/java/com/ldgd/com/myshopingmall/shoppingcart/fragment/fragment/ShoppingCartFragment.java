@@ -32,6 +32,8 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
     private LinearLayout llDelete;
     private Button btnDelete;
     private Button btnCollection;
+    private TextView tvShopcartEdit;
+    private LinearLayout ll_empty_shopcart;
 
 
     @Override
@@ -45,21 +47,34 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void initData() {
         super.initData();
+        showData();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        showData();
+    }
+
+    private void showData() {
         // 从本地读取数据
-        List<GoodsBean>  goodsBeens = CartStorage.getInstance().getDataFromLocal();
+        List<GoodsBean> goodsBeens = CartStorage.getInstance().getDataFromLocal();
         // 如果有显示数据，如果没有显示为空界面
-        if(goodsBeens != null && goodsBeens.size() > 0){
-            ShoppingCartAdapter shoppingCartAdapter = new ShoppingCartAdapter(mContext,goodsBeens);
+        if (goodsBeens != null && goodsBeens.size() > 0) {
+            tvShopcartEdit.setVisibility(View.VISIBLE);
+
             recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
+            ShoppingCartAdapter shoppingCartAdapter = new ShoppingCartAdapter(mContext, goodsBeens,tvShopcartTotal);
+            //   recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
             recyclerview.setAdapter(shoppingCartAdapter);
+            ll_empty_shopcart.setVisibility(View.GONE);
 
-        }else{
+        } else {
             // 显示为空页面
-
+            tvShopcartEdit.setVisibility(View.GONE);
+            ll_empty_shopcart.setVisibility(View.VISIBLE);
         }
-
-
     }
 
     /**
@@ -78,6 +93,8 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
         llDelete = (LinearLayout) view.findViewById(R.id.ll_delete);
         btnDelete = (Button) view.findViewById(R.id.btn_delete);
         btnCollection = (Button) view.findViewById(R.id.btn_collection);
+        tvShopcartEdit = (TextView) view.findViewById(R.id.tv_shopcart_edit);
+        ll_empty_shopcart = (LinearLayout) view.findViewById(R.id.ll_empty_shopcart);
 
         btnCheckOut.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
