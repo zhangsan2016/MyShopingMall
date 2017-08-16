@@ -19,8 +19,6 @@ import java.util.List;
 
 import bletext.ldgd.com.myshopingmall.R;
 
-import static bletext.ldgd.com.myshopingmall.R.id.tv_desc_gov;
-
 /**
  * Created by ldgd on 2017/8/14.
  */
@@ -114,7 +112,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
 
             cbGov = (CheckBox) itemView.findViewById(R.id.cb_gov);
             ivGov = (ImageView) itemView.findViewById(R.id.iv_gov);
-            tvDescGov = (TextView) itemView.findViewById(tv_desc_gov);
+            tvDescGov = (TextView) itemView.findViewById(R.id.tv_desc_gov);
             tvPriceGov = (TextView) itemView.findViewById(R.id.tv_price_gov);
             AddSubview = (AddSubview) itemView.findViewById(R.id.AddSubview);
 
@@ -130,6 +128,9 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         }
 
         public void setData(GoodsBean goodsBean) {
+
+
+            LogUtil.e("Constants.BASE_URl_IMAGE + goodsBean.getFigure() = " + Constants.BASE_URl_IMAGE + goodsBean.getFigure());
             cbGov.setChecked(goodsBean.isChildSelected());
             Glide.with(mContext).load(Constants.BASE_URl_IMAGE + goodsBean.getFigure()).into(ivGov);
             tvDescGov.setText(goodsBean.getName());
