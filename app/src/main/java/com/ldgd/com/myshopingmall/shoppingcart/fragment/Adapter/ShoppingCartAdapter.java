@@ -23,7 +23,7 @@ import bletext.ldgd.com.myshopingmall.R;
  * Created by ldgd on 2017/8/14.
  */
 
-public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapter.ViewHolder> {
+public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     private final Context mContext;
@@ -62,7 +62,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
                 notifyItemChanged(position);
                 showTotalPrice();
 
-               // notifyItemRangeChanged(position,goodsBeens.size());
+                // notifyItemRangeChanged(position,goodsBeens.size());
             }
         });
     }
@@ -86,17 +86,24 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = View.inflate(mContext, R.layout.item_shop_cart, null);
         return new ViewHolder(view);
     }
 
     @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        GoodsBean goodsBean = goodsBeens.get(position);
+        ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.setData(goodsBean);
+    }
+
+/*    @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         GoodsBean goodsBean = goodsBeens.get(position);
         holder.setData(goodsBean);
 
-    }
+    }*/
 
     @Override
     public int getItemCount() {

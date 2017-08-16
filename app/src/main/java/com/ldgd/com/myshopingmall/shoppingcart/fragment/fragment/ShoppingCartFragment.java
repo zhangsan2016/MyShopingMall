@@ -6,11 +6,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ldgd.com.myshopingmall.base.BaseFragment;
 import com.ldgd.com.myshopingmall.home.bean.GoodsBean;
 import com.ldgd.com.myshopingmall.shoppingcart.fragment.Adapter.ShoppingCartAdapter;
+import com.ldgd.com.myshopingmall.shoppingcart.fragment.Adapter.ShoppingCartListViewAdapter;
 import com.ldgd.com.myshopingmall.shoppingcart.fragment.util.CartStorage;
 
 import java.util.List;
@@ -34,6 +36,7 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
     private Button btnCollection;
     private TextView tvShopcartEdit;
     private LinearLayout ll_empty_shopcart;
+    private ListView lvShopping;
 
 
     @Override
@@ -70,6 +73,11 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
             recyclerview.setAdapter(shoppingCartAdapter);
             ll_empty_shopcart.setVisibility(View.GONE);
 
+            // 初始化listView
+            ShoppingCartListViewAdapter shoppingCartListViewAdapter = new ShoppingCartListViewAdapter(mContext,goodsBeens);
+            lvShopping.setAdapter(shoppingCartListViewAdapter);
+
+
         } else {
             // 显示为空页面
             tvShopcartEdit.setVisibility(View.GONE);
@@ -95,6 +103,7 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
         btnCollection = (Button) view.findViewById(R.id.btn_collection);
         tvShopcartEdit = (TextView) view.findViewById(R.id.tv_shopcart_edit);
         ll_empty_shopcart = (LinearLayout) view.findViewById(R.id.ll_empty_shopcart);
+        lvShopping = (ListView) view.findViewById(R.id.lv_shopping);
 
         btnCheckOut.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
