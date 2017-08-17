@@ -67,7 +67,8 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
             tvShopcartEdit.setVisibility(View.VISIBLE);
 
             recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
-            ShoppingCartAdapter shoppingCartAdapter = new ShoppingCartAdapter(mContext, goodsBeens,tvShopcartTotal);
+
+            ShoppingCartAdapter shoppingCartAdapter = new ShoppingCartAdapter(mContext, goodsBeens,tvShopcartTotal,checkboxAll);
             //   recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
             recyclerview.setAdapter(shoppingCartAdapter);
             ll_empty_shopcart.setVisibility(View.GONE);

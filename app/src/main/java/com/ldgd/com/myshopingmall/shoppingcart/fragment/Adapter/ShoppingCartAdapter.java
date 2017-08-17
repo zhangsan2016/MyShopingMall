@@ -10,9 +10,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ldgd.com.myshopingmall.home.bean.GoodsBean;
+import com.ldgd.com.myshopingmall.shoppingcart.fragment.util.CartStorage;
 import com.ldgd.com.myshopingmall.shoppingcart.fragment.view.AddSubview;
 import com.ldgd.com.myshopingmall.util.Constants;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import bletext.ldgd.com.myshopingmall.R;
@@ -26,25 +28,30 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private final Context mContext;
     private final List<GoodsBean> goodsBeens;
-    //    private CheckBox cbGov;
-//    private ImageView ivGov;
-//    private TextView tvDescGov;
-    private AddSubview AddSubview;
-    //  private TextView tvPriceGov;
 
+    /**
+     * 选中结算总价
+     */
     private TextView tvShopcartTotal;
+    /**
+     * 全选反选
+     */
+    private final CheckBox checkboxAll;
+    private static final int FUTURE_GENERATIONS = 1;
+    private static final int CONTRARY_GENERATIONS = 2;
 
 
     /**
      * @param mContext        上下文
      * @param goodsBeens      购物车数据
      * @param tvShopcartTotal 购物总价
+     * @param checkboxAll     全选反选
      */
-    public ShoppingCartAdapter(final Context mContext, final List<GoodsBean> goodsBeens, TextView tvShopcartTotal) {
+    public ShoppingCartAdapter(final Context mContext, final List<GoodsBean> goodsBeens, TextView tvShopcartTotal, final CheckBox checkboxAll) {
         this.mContext = mContext;
         this.goodsBeens = goodsBeens;
         this.tvShopcartTotal = tvShopcartTotal;
-
+        this.checkboxAll = checkboxAll;
 
         //首次加载数据
         showTotalPrice();
@@ -55,7 +62,10 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 GoodsBean goodsBean = goodsBeens.get(position);
                 goodsBean.setChildSelected(!goodsBean.isChildSelected());
+                CartStorage.getInstance().updataData(goodsBean);
+                checkAll();
                 notifyItemChanged(position);
+
                 showTotalPrice();
 
                 // notifyDataSetChanged();
@@ -63,11 +73,56 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 // notifyItemRangeChanged(position,goodsBeens.size());
             }
         });
+
+        checkboxAll.setTag(FUTURE_GENERATIONS);
+        checkboxAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int tag = (int) checkboxAll.getTag();
+                if (tag == FUTURE_GENERATIONS) {
+                    checkboxAll.setTag(CONTRARY_GENERATIONS);
+                    quanxuan(true);
+                    showTotalPrice();
+                } else {
+                    checkboxAll.setTag(FUTURE_GENERATIONS);
+                    quanxuan(false);
+                    showTotalPrice();
+                }
+            }
+        });
+
+
+    }
+
+    private void quanxuan(boolean b) {
+        if (goodsBeens != null && goodsBeens.size() > 0) {
+            for (int i = 0; i < goodsBeens.size(); i++) {
+                GoodsBean goodsBean = goodsBeens.get(i);
+                goodsBean.setChildSelected(b);
+                notifyItemChanged(i);
+            }
+        }
     }
 
 
+    private void checkAll() {
+        if (goodsBeens != null && goodsBeens.size() > 0) {
+            for (int i = 0; i < goodsBeens.size(); i++) {
+                if (!goodsBeens.get(i).isChildSelected()) {
+                    checkboxAll.setChecked(false);
+                    return;
+                }else {
+                    checkboxAll.setChecked(true);
+                }
+
+            }
+        }
+
+    }
+
     private void showTotalPrice() {
-        tvShopcartTotal.setText(getTotalPrice() + "");
+        DecimalFormat df = new DecimalFormat("######0.00");
+        tvShopcartTotal.setText(df.format(getTotalPrice()) + "");
 
     }
 
@@ -83,6 +138,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return total;
     }
 
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = View.inflate(mContext, R.layout.item_shop_cart, null);
@@ -94,14 +150,9 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         GoodsBean goodsBean = goodsBeens.get(position);
         ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.setData(goodsBean);
+
     }
 
-/*    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        GoodsBean goodsBean = goodsBeens.get(position);
-        holder.setData(goodsBean);
-
-    }*/
 
     @Override
     public int getItemCount() {
@@ -114,7 +165,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private ImageView ivGov;
         private TextView tvDescGov;
         private TextView tvPriceGov;
-        private AddSubview numberAddSubView;
+        private AddSubview addSubview;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -123,7 +174,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ivGov = (ImageView) itemView.findViewById(R.id.iv_gov);
             tvDescGov = (TextView) itemView.findViewById(R.id.tv_desc_gov);
             tvPriceGov = (TextView) itemView.findViewById(R.id.tv_price_gov);
-            AddSubview = (AddSubview) itemView.findViewById(R.id.AddSubview);
+            addSubview = (AddSubview) itemView.findViewById(R.id.AddSubview);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,15 +185,29 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
 
+
         }
 
-        public void setData(GoodsBean goodsBean) {
+        public void setData(final GoodsBean goodsBean) {
 
             cbGov.setChecked(goodsBean.isChildSelected());
             Glide.with(mContext).load(Constants.BASE_URl_IMAGE + goodsBean.getFigure()).into(ivGov);
             tvDescGov.setText(goodsBean.getName());
             tvPriceGov.setText(goodsBean.getCover_price() + "");
-            AddSubview.setValue(goodsBean.getCount());
+            addSubview.setValue(goodsBean.getCount());
+
+            addSubview.setMaxValue(10);
+            addSubview.setMinValue(1);
+            addSubview.setOnNumberChangeListener(new AddSubview.OnNumberChangeListener() {
+                @Override
+                public void onNumberChange(int value) {
+                    goodsBean.setCount(value);
+                    // 更新本地数据
+                    CartStorage.getInstance().updataData(goodsBean);
+                    showTotalPrice();
+
+                }
+            });
 
         }
     }
