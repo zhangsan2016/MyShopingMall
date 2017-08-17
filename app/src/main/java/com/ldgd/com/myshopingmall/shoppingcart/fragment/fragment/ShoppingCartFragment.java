@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.ldgd.com.myshopingmall.base.BaseFragment;
 import com.ldgd.com.myshopingmall.home.bean.GoodsBean;
 import com.ldgd.com.myshopingmall.shoppingcart.fragment.Adapter.ShoppingCartAdapter;
-import com.ldgd.com.myshopingmall.shoppingcart.fragment.Adapter.ShoppingCartListViewAdapter;
 import com.ldgd.com.myshopingmall.shoppingcart.fragment.util.CartStorage;
 
 import java.util.List;
@@ -74,8 +73,8 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
             ll_empty_shopcart.setVisibility(View.GONE);
 
             // 初始化listView
-            ShoppingCartListViewAdapter shoppingCartListViewAdapter = new ShoppingCartListViewAdapter(mContext,goodsBeens);
-            lvShopping.setAdapter(shoppingCartListViewAdapter);
+//            ShoppingCartListViewAdapter shoppingCartListViewAdapter = new ShoppingCartListViewAdapter(mContext,goodsBeens);
+//            lvShopping.setAdapter(shoppingCartListViewAdapter);
 
 
         } else {

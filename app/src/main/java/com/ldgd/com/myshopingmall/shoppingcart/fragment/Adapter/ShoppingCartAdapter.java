@@ -7,13 +7,11 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ldgd.com.myshopingmall.home.bean.GoodsBean;
 import com.ldgd.com.myshopingmall.shoppingcart.fragment.view.AddSubview;
 import com.ldgd.com.myshopingmall.util.Constants;
-import com.ldgd.com.myshopingmall.util.LogUtil;
 
 import java.util.List;
 
@@ -28,11 +26,11 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private final Context mContext;
     private final List<GoodsBean> goodsBeens;
-    private CheckBox cbGov;
-    private ImageView ivGov;
-    private TextView tvDescGov;
+    //    private CheckBox cbGov;
+//    private ImageView ivGov;
+//    private TextView tvDescGov;
     private AddSubview AddSubview;
-    private TextView tvPriceGov;
+    //  private TextView tvPriceGov;
 
     private TextView tvShopcartTotal;
 
@@ -55,12 +53,12 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             @Override
             public void onItemClickListener(View view, int position) {
 
-                LogUtil.e("      goodsBeens.size() = " + goodsBeens.toString());
-                Toast.makeText(mContext, "onItemClickListener position = " + position, Toast.LENGTH_SHORT).show();
                 GoodsBean goodsBean = goodsBeens.get(position);
                 goodsBean.setChildSelected(!goodsBean.isChildSelected());
                 notifyItemChanged(position);
                 showTotalPrice();
+
+                // notifyDataSetChanged();
 
                 // notifyItemRangeChanged(position,goodsBeens.size());
             }
@@ -112,7 +110,11 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
+        private CheckBox cbGov;
+        private ImageView ivGov;
+        private TextView tvDescGov;
+        private TextView tvPriceGov;
+        private AddSubview numberAddSubView;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -136,8 +138,6 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         public void setData(GoodsBean goodsBean) {
 
-
-            LogUtil.e("Constants.BASE_URl_IMAGE + goodsBean.getFigure() = " + Constants.BASE_URl_IMAGE + goodsBean.getFigure());
             cbGov.setChecked(goodsBean.isChildSelected());
             Glide.with(mContext).load(Constants.BASE_URl_IMAGE + goodsBean.getFigure()).into(ivGov);
             tvDescGov.setText(goodsBean.getName());
