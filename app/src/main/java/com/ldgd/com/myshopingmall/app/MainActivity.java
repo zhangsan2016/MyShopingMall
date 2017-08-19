@@ -107,7 +107,7 @@ public class MainActivity extends FragmentActivity {
 
     private BaseFragment getFragment(int position) {
 
-        if (fragments.size() > 0 && fragments != null) {
+        if (fragments != null && fragments.size() > 0) {
             BaseFragment baseFragment = fragments.get(position);
             return baseFragment;
         }
