@@ -37,8 +37,6 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
      * 全选反选
      */
     private final CheckBox checkboxAll;
-    private static final int FUTURE_GENERATIONS = 1;
-    private static final int CONTRARY_GENERATIONS = 2;
 
 
     /**
@@ -56,49 +54,60 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         //首次加载数据
         showTotalPrice();
 
+        //设置点击事件
+        setListener();
+
+        //校验是否全选
+        checkAll();
+
+    }
+
+    private void setListener() {
         setOnItemClickListener(new ShoppingCartOnItemClickListener() {
             @Override
             public void onItemClickListener(View view, int position) {
 
+                //1.根据位置找到对应的Bean对象
                 GoodsBean goodsBean = goodsBeens.get(position);
+                //2.设置取反状态
                 goodsBean.setChildSelected(!goodsBean.isChildSelected());
+                //3.更新本地存储
                 CartStorage.getInstance().updataData(goodsBean);
+                //4.校验是否全选
                 checkAll();
+                //5.刷新状态
                 notifyItemChanged(position);
-
+                //6.计算总价格
                 showTotalPrice();
 
-                // notifyDataSetChanged();
-
-                // notifyItemRangeChanged(position,goodsBeens.size());
             }
         });
 
-        checkboxAll.setTag(FUTURE_GENERATIONS);
         checkboxAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int tag = (int) checkboxAll.getTag();
-                if (tag == FUTURE_GENERATIONS) {
-                    checkboxAll.setTag(CONTRARY_GENERATIONS);
-                    quanxuan(true);
-                    showTotalPrice();
-                } else {
-                    checkboxAll.setTag(FUTURE_GENERATIONS);
-                    quanxuan(false);
-                    showTotalPrice();
-                }
+
+                // 根据状态设置全选和非全选
+                checkAll_none(checkboxAll.isChecked());
+
+                // 计算总价格
+                showTotalPrice();
             }
         });
 
 
     }
 
-    private void quanxuan(boolean b) {
+    /**
+     * 设置全选和非全选
+     *
+     * @param isCheck
+     */
+    private void checkAll_none(boolean isCheck) {
         if (goodsBeens != null && goodsBeens.size() > 0) {
             for (int i = 0; i < goodsBeens.size(); i++) {
                 GoodsBean goodsBean = goodsBeens.get(i);
-                goodsBean.setChildSelected(b);
+                goodsBean.setChildSelected(isCheck);
                 notifyItemChanged(i);
             }
         }
@@ -111,7 +120,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (!goodsBeens.get(i).isChildSelected()) {
                     checkboxAll.setChecked(false);
                     return;
-                }else {
+                } else {
                     checkboxAll.setChecked(true);
                 }
 
