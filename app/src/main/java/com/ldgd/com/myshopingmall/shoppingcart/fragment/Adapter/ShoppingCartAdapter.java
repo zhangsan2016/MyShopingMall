@@ -38,7 +38,6 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
      */
     private final CheckBox checkboxAll;
 
-
     /**
      * @param mContext        上下文
      * @param goodsBeens      购物车数据
@@ -96,14 +95,15 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         });
 
 
+
+
     }
 
     /**
      * 设置全选和非全选
-     *
      * @param isCheck
      */
-    private void checkAll_none(boolean isCheck) {
+    public void checkAll_none(boolean isCheck) {
         if (goodsBeens != null && goodsBeens.size() > 0) {
             for (int i = 0; i < goodsBeens.size(); i++) {
                 GoodsBean goodsBean = goodsBeens.get(i);
@@ -129,7 +129,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     }
 
-    private void showTotalPrice() {
+    public void showTotalPrice() {
         DecimalFormat df = new DecimalFormat("######0.00");
         tvShopcartTotal.setText(df.format(getTotalPrice()) + "");
 

@@ -18,6 +18,8 @@ import java.util.List;
 
 import bletext.ldgd.com.myshopingmall.R;
 
+import static bletext.ldgd.com.myshopingmall.R.id.tv_shopcart_edit;
+
 /**
  * Created by ldgd on 2017/7/25.
  * 购物车
@@ -37,6 +39,17 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
     private LinearLayout ll_empty_shopcart;
     private ListView lvShopping;
 
+    private ShoppingCartAdapter shoppingCartAdapter;
+
+    /**
+     * 编辑状态
+     */
+    private static final int ACTION_EDIT = 0;
+    /**
+     * 完成状态
+     */
+    private static final int ACTION_COMPLETE = 1;
+
 
     @Override
     public View initView() {
@@ -49,6 +62,10 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void initData() {
         super.initData();
+
+        tvShopcartEdit.setTag(ACTION_EDIT);
+        tvShopcartEdit.setText("编辑");
+        llCheckAll.setVisibility(View.GONE);
         showData();
     }
 
@@ -68,8 +85,7 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
 
             recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
 
-            ShoppingCartAdapter shoppingCartAdapter = new ShoppingCartAdapter(mContext, goodsBeens,tvShopcartTotal,checkboxAll);
-            //   recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
+            shoppingCartAdapter = new ShoppingCartAdapter(mContext, goodsBeens, tvShopcartTotal, checkboxAll);
             recyclerview.setAdapter(shoppingCartAdapter);
             ll_empty_shopcart.setVisibility(View.GONE);
 
@@ -101,13 +117,14 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
         llDelete = (LinearLayout) view.findViewById(R.id.ll_delete);
         btnDelete = (Button) view.findViewById(R.id.btn_delete);
         btnCollection = (Button) view.findViewById(R.id.btn_collection);
-        tvShopcartEdit = (TextView) view.findViewById(R.id.tv_shopcart_edit);
+        tvShopcartEdit = (TextView) view.findViewById(tv_shopcart_edit);
         ll_empty_shopcart = (LinearLayout) view.findViewById(R.id.ll_empty_shopcart);
         lvShopping = (ListView) view.findViewById(R.id.lv_shopping);
 
         btnCheckOut.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
         btnCollection.setOnClickListener(this);
+        tvShopcartEdit.setOnClickListener(this);
     }
 
     /**
@@ -124,6 +141,45 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
             // Handle clicks for btnDelete
         } else if (v == btnCollection) {
             // Handle clicks for btnCollection
+        } else if (v == tvShopcartEdit) {
+            int action = (int) tvShopcartEdit.getTag();
+            if (action == ACTION_EDIT) {
+                showDeleteView();
+            } else {
+                hideDeleteView();
+            }
         }
+    }
+
+    private void hideDeleteView() {
+        // 设置为编辑状态
+        tvShopcartEdit.setTag(ACTION_EDIT);
+        // 设置文字
+        tvShopcartEdit.setText("编辑");
+        // 显示完成界面
+        llCheckAll.setVisibility(View.VISIBLE);
+        // 隐藏编辑界面
+        llDelete.setVisibility(View.GONE);
+
+        // 设置全选
+        shoppingCartAdapter.checkAll_none(true);
+        // 计算总价
+        shoppingCartAdapter.showTotalPrice();
+    }
+
+    private void showDeleteView() {
+        // 设置为完成状态
+        tvShopcartEdit.setTag(ACTION_COMPLETE);
+        // 设置文字
+        tvShopcartEdit.setText("完成");
+        // 隐藏完成界面
+        llCheckAll.setVisibility(View.GONE);
+        // 显示编辑界面
+        llDelete.setVisibility(View.VISIBLE);
+
+
+        shoppingCartAdapter.checkAll_none(false);
+        // 计算总价
+        shoppingCartAdapter.showTotalPrice();
     }
 }
