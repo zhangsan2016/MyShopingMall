@@ -123,6 +123,7 @@
                 android:visibility="gone">
 
                 <CheckBox
+                    android:id="@+id/cb_editor"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

@@ -28,6 +28,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private final Context mContext;
     private final List<GoodsBean> goodsBeens;
+    private final CheckBox cbEditor;
 
     /**
      * 选中结算总价
@@ -42,13 +43,15 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
      * @param mContext        上下文
      * @param goodsBeens      购物车数据
      * @param tvShopcartTotal 购物总价
-     * @param checkboxAll     全选反选
+     * @param checkboxAll     全选反选复选框
+     * @param cb_editor       编辑的全选反选复选框
      */
-    public ShoppingCartAdapter(final Context mContext, final List<GoodsBean> goodsBeens, TextView tvShopcartTotal, final CheckBox checkboxAll) {
+    public ShoppingCartAdapter(final Context mContext, final List<GoodsBean> goodsBeens, TextView tvShopcartTotal, final CheckBox checkboxAll, CheckBox cb_editor) {
         this.mContext = mContext;
         this.goodsBeens = goodsBeens;
         this.tvShopcartTotal = tvShopcartTotal;
         this.checkboxAll = checkboxAll;
+        cbEditor = cb_editor;
 
         //首次加载数据
         showTotalPrice();
@@ -94,13 +97,24 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         });
 
+        cbEditor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                // 根据状态设置全选和非全选
+                checkAll_none(cbEditor.isChecked());
+
+                // 计算总价格
+                showTotalPrice();
+            }
+        });
 
 
     }
 
     /**
      * 设置全选和非全选
+     *
      * @param isCheck
      */
     public void checkAll_none(boolean isCheck) {
@@ -108,8 +122,11 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             for (int i = 0; i < goodsBeens.size(); i++) {
                 GoodsBean goodsBean = goodsBeens.get(i);
                 goodsBean.setChildSelected(isCheck);
+                checkboxAll.setChecked(isCheck);
                 notifyItemChanged(i);
             }
+        } else {
+            checkboxAll.setChecked(false);
         }
     }
 
@@ -119,12 +136,17 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             for (int i = 0; i < goodsBeens.size(); i++) {
                 if (!goodsBeens.get(i).isChildSelected()) {
                     checkboxAll.setChecked(false);
+                    cbEditor.setChecked(false);
                     return;
                 } else {
                     checkboxAll.setChecked(true);
+                    cbEditor.setChecked(true);
                 }
 
             }
+        } else {
+            checkboxAll.setChecked(false);
+            cbEditor.setChecked(false);
         }
 
     }

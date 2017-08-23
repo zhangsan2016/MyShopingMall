@@ -38,6 +38,7 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
     private TextView tvShopcartEdit;
     private LinearLayout ll_empty_shopcart;
     private ListView lvShopping;
+    private CheckBox cb_editor;
 
     private ShoppingCartAdapter shoppingCartAdapter;
 
@@ -85,7 +86,7 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
 
             recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
 
-            shoppingCartAdapter = new ShoppingCartAdapter(mContext, goodsBeens, tvShopcartTotal, checkboxAll);
+            shoppingCartAdapter = new ShoppingCartAdapter(mContext, goodsBeens, tvShopcartTotal, checkboxAll,cb_editor);
             recyclerview.setAdapter(shoppingCartAdapter);
             ll_empty_shopcart.setVisibility(View.GONE);
 
@@ -120,6 +121,7 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
         tvShopcartEdit = (TextView) view.findViewById(tv_shopcart_edit);
         ll_empty_shopcart = (LinearLayout) view.findViewById(R.id.ll_empty_shopcart);
         lvShopping = (ListView) view.findViewById(R.id.lv_shopping);
+        cb_editor = (CheckBox) view.findViewById(R.id.cb_editor);
 
         btnCheckOut.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
