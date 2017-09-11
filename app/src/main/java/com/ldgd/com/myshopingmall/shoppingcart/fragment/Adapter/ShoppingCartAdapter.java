@@ -131,7 +131,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    private void checkAll() {
+    public void checkAll() {
         if (goodsBeens != null && goodsBeens.size() > 0) {
             for (int i = 0; i < goodsBeens.size(); i++) {
                 if (!goodsBeens.get(i).isChildSelected()) {

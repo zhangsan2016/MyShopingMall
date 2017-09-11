@@ -64,10 +64,13 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
     public void initData() {
         super.initData();
 
+        //设置默认的编辑状态
         tvShopcartEdit.setTag(ACTION_EDIT);
-        tvShopcartEdit.setText("编辑");
-        llCheckAll.setVisibility(View.GONE);
-        showData();
+//        tvShopcartEdit.setText("编辑");
+//        llCheckAll.setVisibility(View.VISIBLE);
+
+        // 修改到onResume中执行
+     //   showData();
     }
 
     @Override
@@ -163,10 +166,12 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
         // 隐藏编辑界面
         llDelete.setVisibility(View.GONE);
 
-        // 设置全选
-        shoppingCartAdapter.checkAll_none(true);
-        // 计算总价
-        shoppingCartAdapter.showTotalPrice();
+        if (shoppingCartAdapter != null) {
+            // 设置全选
+            shoppingCartAdapter.checkAll_none(true);
+            // 计算总价
+            shoppingCartAdapter.showTotalPrice();
+        }
     }
 
     private void showDeleteView() {
@@ -179,9 +184,13 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
         // 显示编辑界面
         llDelete.setVisibility(View.VISIBLE);
 
-
-        shoppingCartAdapter.checkAll_none(false);
-        // 计算总价
-        shoppingCartAdapter.showTotalPrice();
+        if (shoppingCartAdapter != null) {
+            // 设置非全选
+            shoppingCartAdapter.checkAll_none(false);
+            // 检测全选状态
+            shoppingCartAdapter.checkAll();
+            // 计算总价
+           // shoppingCartAdapter.showTotalPrice();
+        }
     }
 }
