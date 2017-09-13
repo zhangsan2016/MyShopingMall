@@ -143,7 +143,7 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
         if (v == btnCheckOut) {
             // Handle clicks for btnCheckOut
         } else if (v == btnDelete) {
-            // Handle clicks for btnDelete
+            shoppingCartAdapter.deleteData();
         } else if (v == btnCollection) {
             // Handle clicks for btnCollection
         } else if (v == tvShopcartEdit) {

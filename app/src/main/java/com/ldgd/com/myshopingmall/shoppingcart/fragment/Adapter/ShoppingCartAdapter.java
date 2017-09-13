@@ -123,11 +123,15 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 GoodsBean goodsBean = goodsBeens.get(i);
                 goodsBean.setChildSelected(isCheck);
                 checkboxAll.setChecked(isCheck);
+                //更新本地存储
+                CartStorage.getInstance().updataData(goodsBean);
                 notifyItemChanged(i);
             }
         } else {
             checkboxAll.setChecked(false);
         }
+
+
     }
 
 
@@ -241,6 +245,24 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
 
         }
+    }
+
+
+    public void deleteData() {
+         if(goodsBeens != null && goodsBeens.size() > 0){
+             for (int i = 0; i < goodsBeens.size(); i++) {
+                 GoodsBean goodsBean =   goodsBeens.get(i);
+                 if(goodsBean.isChildSelected()){
+                     // 删除内存数据
+                     goodsBeens.remove(goodsBean);
+                     // 删除本地数据
+                     CartStorage.getInstance().deleteData(goodsBean);
+                   // 刷新当前数据
+                     notifyItemRemoved(i);
+                     i--;
+                 }
+             }
+         }
     }
 
     private ShoppingCartOnItemClickListener shoppingCartOnItemClickListener;
