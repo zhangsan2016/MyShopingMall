@@ -66,11 +66,12 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
 
         //设置默认的编辑状态
         tvShopcartEdit.setTag(ACTION_EDIT);
-//        tvShopcartEdit.setText("编辑");
+
+        //       tvShopcartEdit.setText("编辑");
 //        llCheckAll.setVisibility(View.VISIBLE);
 
         // 修改到onResume中执行
-     //   showData();
+        //   showData();
     }
 
     @Override
@@ -85,11 +86,20 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
         List<GoodsBean> goodsBeens = CartStorage.getInstance().getDataFromLocal();
         // 如果有显示数据，如果没有显示为空界面
         if (goodsBeens != null && goodsBeens.size() > 0) {
+
             tvShopcartEdit.setVisibility(View.VISIBLE);
+
+            // 判断当前状态
+            int action = (int)tvShopcartEdit.getTag();
+            if (action == ACTION_EDIT) {
+                hideDeleteView();
+            } else {
+                showDeleteView();
+            }
 
             recyclerview.setLayoutManager(new LinearLayoutManager(mContext));
 
-            shoppingCartAdapter = new ShoppingCartAdapter(mContext, goodsBeens, tvShopcartTotal, checkboxAll,cb_editor);
+            shoppingCartAdapter = new ShoppingCartAdapter(mContext, goodsBeens, tvShopcartTotal, checkboxAll, cb_editor);
             recyclerview.setAdapter(shoppingCartAdapter);
             ll_empty_shopcart.setVisibility(View.GONE);
 
@@ -100,8 +110,9 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
 
         } else {
             // 显示为空页面
-            tvShopcartEdit.setVisibility(View.GONE);
-            ll_empty_shopcart.setVisibility(View.VISIBLE);
+//            tvShopcartEdit.setVisibility(View.GONE);
+//            ll_empty_shopcart.setVisibility(View.VISIBLE);
+            enptyShoppingCart();
         }
     }
 
@@ -142,8 +153,16 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
     public void onClick(View v) {
         if (v == btnCheckOut) {
             // Handle clicks for btnCheckOut
-        } else if (v == btnDelete) {
+        } else if (v == btnDelete) {  // 购物车编辑状态-删除
+            // 删除选中
             shoppingCartAdapter.deleteData();
+            // 校验状态
+            shoppingCartAdapter.checkAll();
+            // 数据大小为0时显示为空界面
+            if (shoppingCartAdapter.getItemCount() == 0) {
+                enptyShoppingCart();
+            }
+
         } else if (v == btnCollection) {
             // Handle clicks for btnCollection
         } else if (v == tvShopcartEdit) {
@@ -154,6 +173,16 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
                 hideDeleteView();
             }
         }
+    }
+
+    private void enptyShoppingCart() {
+        //编辑和完成状态文字 -隐藏
+        tvShopcartEdit.setVisibility(View.GONE);
+        // 编辑界面-隐藏
+        llDelete.setVisibility(View.GONE);
+        // 显示为空的layout
+        ll_empty_shopcart.setVisibility(View.VISIBLE);
+
     }
 
     private void hideDeleteView() {
@@ -190,7 +219,7 @@ public class ShoppingCartFragment extends BaseFragment implements View.OnClickLi
             // 检测全选状态
             shoppingCartAdapter.checkAll();
             // 计算总价
-           // shoppingCartAdapter.showTotalPrice();
+            // shoppingCartAdapter.showTotalPrice();
         }
     }
 }
